@@ -1,30 +1,49 @@
 {
-  "name": "node-base",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon --watch  \"src/\" --exec \"ts-node src/entry.ts\" -e ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Hedellen-Fernandes/node-base.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Hedellen-Fernandes/node-base/issues"
-  },
-  "homepage": "https://github.com/Hedellen-Fernandes/node-base#readme",
-  "dependencies": {
-    "express": "^4.17.1",
-    "nodemon": "^2.0.4",
-    "ts-node": "^9.0.0",
-    "typescript": "^4.0.2",
-    "@types/express": "^4.17.8"
-  },
-  "devDependencies": {
-  }
+	"name": "node-base",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "nodemon --watch  \"src/\" --exec \"ts-node src/entry.ts\" -e ts",
+		"test": "jest --no-cache"
+	},
+	"jest": {
+		"transform": {
+			"^.+\\.ts$": "ts-jest"
+		},
+		"testRegex": "\\.test\\.ts",
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js",
+			"jsx",
+			"json",
+			"node"
+		]
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Hedellen-Fernandes/node-base.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Hedellen-Fernandes/node-base/issues"
+	},
+	"homepage": "https://github.com/Hedellen-Fernandes/node-base#readme",
+	"dependencies": {
+		"express": "^4.17.1",
+		"nodemon": "^2.0.4",
+		"ts-node": "^9.0.0",
+		"typescript": "^4.0.2",
+		"@types/express": "^4.17.8"
+	},
+	"devDependencies": {
+		"@types/jest": "^26.0.13",
+		"@types/supertest": "^2.0.10",
+		"jest": "^26.4.2",
+		"supertest": "^4.0.2",
+		"ts-jest": "^26.3.0"
+	}
 }
