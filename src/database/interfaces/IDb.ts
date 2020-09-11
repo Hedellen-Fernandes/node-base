@@ -4,27 +4,31 @@ class NotImplmentedException extends Error {
 	}
 }
 
-class InterfaceDb {
-	create() {
+abstract class IDb {
+	create(item: Object) {
 		throw new NotImplmentedException();
 	}
 
-	read() {
+	read(item: Object) {
 		throw new NotImplmentedException();
 	}
 
-	update() {
+	update(item: Object) {
 		throw new NotImplmentedException();
 	}
 
-	delete() {
+	delete(item: Object) {
 		throw new NotImplmentedException();
 	}
 
-	isConnected() {
+	isConnected(item: Object) {
+		throw new NotImplmentedException();
+	}
+
+	connect() {
 		throw new NotImplmentedException();
 	}
 }
 
 
-export default InterfaceDb;
+export default IDb;

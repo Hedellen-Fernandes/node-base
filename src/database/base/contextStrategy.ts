@@ -1,28 +1,25 @@
-import InterfaceDb from './interfaceDb';
-
-type databaseMethod = () => {};
-
-type database = {
-	isConnected?: databaseMethod,
-	connect?: databaseMethod,
-	create?: databaseMethod,
-	read?: databaseMethod,
-	update?: databaseMethod,
-	delete?: databaseMethod
-}
-
+import InterfaceDb from '../interfaces/IDb';
+import IdbContextStrategy from '../interfaces/IDbContextStrategy';
 class ContextStrategy extends InterfaceDb {
-	dataBase: database;
+	dataBase: IdbContextStrategy;
 
-	constructor(database: database) {
+	constructor(database: IdbContextStrategy) {
 		super();
 		this.dataBase = database;
 	}
 
-	isConnected() { }
-	connect() { }
-	create() { }
-	read() { }
-	update() { }
-	delete() { }
+	create(item: Object) {
+		this.dataBase.create();
+	}
+	read(item: Object) {
+		this.dataBase.read();
+	}
+	update(item: Object) {
+		this.dataBase.update();
+	}
+	delete(item: Object) {
+		this.dataBase.delete();
+	}
 }
+
+export default ContextStrategy;
