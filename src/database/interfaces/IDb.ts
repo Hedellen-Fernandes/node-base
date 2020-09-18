@@ -1,3 +1,5 @@
+import { DocumentQuery, Query } from "mongoose";
+import IUser from "../interfaces/IUser";
 class NotImplmentedException extends Error {
 	constructor() {
 		super('Not Implemented Exception');
@@ -5,23 +7,23 @@ class NotImplmentedException extends Error {
 }
 
 abstract class IDb {
-	create(item: Object) {
+	create(item: Object): Object {
 		throw new NotImplmentedException();
 	}
 
-	read(item: Object) {
+	read(item: Object): Query<any> {
 		throw new NotImplmentedException();
 	}
 
-	update(item: Object) {
+	update(id: String, item: Object): DocumentQuery<any, IUser> {
 		throw new NotImplmentedException();
 	}
 
-	delete(item: Object) {
+	delete(id: String): Query<any> {
 		throw new NotImplmentedException();
 	}
 
-	isConnected(item: Object) {
+	isConnected(): String {
 		throw new NotImplmentedException();
 	}
 

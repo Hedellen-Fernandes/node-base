@@ -1,39 +1,58 @@
-import mongoose, { Model } from 'mongoose';
+import mongoose, { Connection, DocumentQuery, Model, Query } from 'mongoose';
 import IDb from '../../interfaces/IDb';
-import IUser from '../../interfaces/IUser';
+
+import ConnectionStateEnum from './enums/ConnectionState'
 
 class mongoDb extends IDb {
-	_schema: Model<any>
+	schema: Model<any>
 
 	constructor(schema: Model<any>) {
 		super();
 
-		this._schema = schema;
+		this.schema = schema;
 	}
 
-	async connect() {
+	async connect(): Promise<Connection> {
 		const connectionParams = {
 			useCreateIndex: true,
 			useNewUrlParser: true,
-			useUnifiedTopology: true
+			useUnifiedTopology: true,
 		};
 
-		await mongoose.connect('mongodb://root:root@localhost:27017/financialManagement', connectionParams, error => {
+		await mongoose.connect('mongodb://root:root@localhost:27017/financialManagement', connectionParams, (error) => {
 			if (!error) return;
-			console.log('Connection failed!');
+			console.log('[DATABASE] Connection failed!');
 		});
 
-		const connection = mongoose.connection;
-		connection.once('open', () => console.log("Database is runing"));
+		const { connection } = mongoose;
+		connection.once('open', () => console.log('[DATABASE] is running'));
 
-		return connection
+		return connection;
 	}
 
-	create(item: Object) {
-		return this._schema.create(item);
+	isConnect(): Number {
+		return mongoose.connection.readyState;
+	}
+
+	disconnect(): Promise<void> {
+		return mongoose.connection.close();
+	}
+
+	create(item: Object): Promise<any> {
+		return this.schema.create(item);
+	}
+
+	read(item: Object, skip: number = 0, limit: number = 10): Query<any> {
+		return this.schema.find(item).skip(skip).limit(limit);
+	}
+
+	update(id: String, item: Object): DocumentQuery<any, any> {
+		return this.schema.updateOne({ _id: id }, { $set: item });
+	}
+
+	delete(id: String): Query<any> {
+		return this.schema.deleteOne({ _id: id });
 	}
 }
-
-export const close = (): Promise<void> => mongoose.connection.close();
 
 export default mongoDb;
