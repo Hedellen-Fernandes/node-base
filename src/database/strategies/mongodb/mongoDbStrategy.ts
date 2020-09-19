@@ -1,8 +1,6 @@
 import mongoose, { Connection, DocumentQuery, Model, Query } from 'mongoose';
 import IDb from '../../interfaces/IDb';
 
-import ConnectionStateEnum from './enums/ConnectionState'
-
 class mongoDb extends IDb {
 	schema: Model<any>
 

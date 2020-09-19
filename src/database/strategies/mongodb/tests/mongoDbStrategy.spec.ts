@@ -1,11 +1,14 @@
 import MongoDbStrategy from '../mongoDbStrategy';
 import UserSchema from '../schemas/UserSchema';
 import ConnectionStateEnum from '../enums/ConnectionState';
+import { User } from '../../../../types/types';
 
 const mongoDbContext = new MongoDbStrategy(UserSchema);
-let mockUser = generateNewUser();
 
-function generateNewUser(): Object {
+let mockUser: User = generateNewUser();
+let mockUserId: String;
+
+function generateNewUser(): User {
 	return {
 		email: `${new Date().getTime()}@gmail.com`,
 		firstName: `${new Date().getTime()}`,
@@ -14,11 +17,20 @@ function generateNewUser(): Object {
 	}
 }
 
+function returnUser(res: User): User {
+	return {
+		email: res.email,
+		firstName: res.firstName,
+		lastName: res.lastName,
+		password: res.password
+	}
+}
+
 describe('MongoDb Tests Suite', () => {
 
 	beforeAll(async () => {
 		await mongoDbContext.connect();
-		mockUser = generateNewUser();
+		mockUserId = await mongoDbContext.create(mockUser).then(res => res._id);
 	});
 
 	afterAll(async () => {
@@ -35,27 +47,33 @@ describe('MongoDb Tests Suite', () => {
 
 	describe('CRUD Tests', () => {
 		test('Should create and return new User', async () => {
-			let insertedUser = await mongoDbContext.create(mockUser).then(insertedUser => {
-				return {
-					email: insertedUser.email,
-					firstName: insertedUser.firstName,
-					lastName: insertedUser.lastName,
-					password: insertedUser.password
-				}
-			});
+			const newUserMock = generateNewUser();
+			let insertedUser = await mongoDbContext.create(newUserMock).then(res => returnUser(res));
 
-			expect(insertedUser).toEqual(mockUser);
+			expect(insertedUser).toEqual(newUserMock);
 		});
 
-		test('Should read and return new User', async () => {
+		test('Should read all users', async () => {
+			let usersFound = await mongoDbContext.read({});
 
+			expect(usersFound).toHaveLength;
 		});
 
-		test('Should update and return new User', async () => {
+		test('Should read specif user', async () => {
+			let userFound = await mongoDbContext.read({ _id: mockUserId }).then(res => returnUser(res.shift()));
 
+			expect(userFound).toEqual(mockUser);
+		});
+
+		test('Should update and return user updated', async () => {
+			let result = await mongoDbContext.update(mockUserId, { email: `${new Date().getTime()}@gmail.com` });
+			expect(result.nModified).toEqual(1);
 		});
 
 		test('Should delete and return new User', async () => {
+			let result = await mongoDbContext.delete(mockUserId);
+
+			expect(result.deletedCount).toEqual(1)
 
 		});
 	});
