@@ -33,7 +33,7 @@ class mongoDb extends IDb {
 	}
 
 	disconnect(): Promise<void> {
-		return mongoose.connection.close();
+		return mongoose.connection.close().then(() => console.log('[DATABASE] Connection closed'));
 	}
 
 	create(item: Object): Promise<any> {
